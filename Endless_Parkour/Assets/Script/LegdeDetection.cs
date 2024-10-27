@@ -8,15 +8,10 @@ public class LegdeDetection : MonoBehaviour
 {
     [SerializeField] float radius;
     [SerializeField] LayerMask groundMask;
-    [SerializeField] PlayerMovement player;
+    [SerializeField] Player player;
     bool canDetect = false;
-    // Start is called before the first frame update
-    void Start()
-    {
+    BoxCollider2D boxCd => GetComponent<BoxCollider2D>();
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (canDetect)
@@ -32,6 +27,11 @@ public class LegdeDetection : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D collision)
     {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCd.bounds.center, boxCd.size, 0);
+        // foreach (var hit in colliders){
+        //  if(hit.gameObject.GetComponent<LevelGenerator>)
+        // }
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             canDetect = true;

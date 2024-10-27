@@ -5,7 +5,6 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     [SerializeField] Transform[] levelPart;
-    [SerializeField] Transform respawnPos;
     [SerializeField] Vector3 nextSpawnPosition;
     [SerializeField] float distanceToSpawn;
     [SerializeField] float distanceToDelete;

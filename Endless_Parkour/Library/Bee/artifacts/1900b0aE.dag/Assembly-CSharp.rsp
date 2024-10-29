@@ -392,6 +392,7 @@
 "Assets/Script/LevelGenerator.cs"
 "Assets/Script/MovingTrap.cs"
 "Assets/Script/ParallaxBackground.cs"
+"Assets/Script/PlatFormColtroller.cs"
 "Assets/Script/Player.cs"
 "Assets/Script/Trap.cs"
 -langversion:9.0

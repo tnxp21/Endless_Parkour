@@ -105,6 +105,16 @@ public class Player : MonoBehaviour
     {
         slideTimeCounter -= Time.deltaTime;
     }
+
+    public void Damage()
+    {
+        if (runSpeed >= maxSpeed)
+        {
+            KnockBack();
+        }
+        else if (canBeKnock) Die();
+    }
+
     private void Die()
     {
         isDead = true;
@@ -146,7 +156,12 @@ public class Player : MonoBehaviour
         rb.velocity = knockBackDir;
     }
 
-    void CancelKnockBack() => isKnocked = false;
+    void CancelKnockBack()
+    {
+        isKnocked = false;
+        SpeedReset();
+    }
+
     #endregion
 
     #region Speed Control

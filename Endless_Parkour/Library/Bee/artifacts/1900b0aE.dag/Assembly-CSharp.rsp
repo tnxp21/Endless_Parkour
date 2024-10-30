@@ -387,6 +387,7 @@
 -analyzer:"D:/Learning/Unity/UnityEditor/2022.3.50f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Script/Coin.cs"
 "Assets/Script/CoinGenerator.cs"
+"Assets/Script/DeadZone_Trigger.cs"
 "Assets/Script/GameManager.cs"
 "Assets/Script/LegdeDetection.cs"
 "Assets/Script/LevelGenerator.cs"

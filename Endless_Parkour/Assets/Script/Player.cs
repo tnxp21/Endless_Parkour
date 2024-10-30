@@ -122,7 +122,12 @@ public class Player : MonoBehaviour
         anim.SetBool("isDead", true);
     }
 
-    void EndOfDeathAnim() => rb.velocity = Vector2.zero;
+    IEnumerator EndOfDeathAnim() {
+        yield return new WaitForSeconds(1);
+        rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(1);
+        GameManager.instance.RestartLevel();
+    }
 
     IEnumerator Invincibility()
     {

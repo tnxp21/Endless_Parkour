@@ -194,7 +194,6 @@ public class Player : MonoBehaviour
         {
             slideTimeCounter = slideCoolDownTime;
             isSliding = false;
-            Debug.Log("Cooldown: " + slideTimeCounter);
         }
     }
 
@@ -257,7 +256,6 @@ public class Player : MonoBehaviour
     //SlidingButton controller
     private void SlidingButton()
     {
-        Debug.Log(slideTimeCounter);
         if (rb.velocity.x != 0 && isOnGround && slideTimeCounter <= 0)
         {
             isSliding = true;

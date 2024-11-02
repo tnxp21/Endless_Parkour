@@ -9,7 +9,7 @@ public class LegdeDetection : MonoBehaviour
     [SerializeField] float radius;
     [SerializeField] LayerMask groundMask;
     [SerializeField] Player player;
-    bool canDetect = false;
+    bool canDetect = true;
     BoxCollider2D boxCd => GetComponent<BoxCollider2D>();
 
     void Update()

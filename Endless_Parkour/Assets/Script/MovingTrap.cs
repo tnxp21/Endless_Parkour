@@ -9,8 +9,9 @@ public class MovingTrap : Trap
     [SerializeField] Transform[] movingPoint;
     int i = 0;
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         transform.position = movingPoint[0].position;
     }
 
@@ -27,6 +28,5 @@ public class MovingTrap : Trap
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);
-        Debug.Log("Damage by moving trap");
     }
 }

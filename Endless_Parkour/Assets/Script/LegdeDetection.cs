@@ -28,9 +28,10 @@ public class LegdeDetection : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision)
     {
         Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCd.bounds.center, boxCd.size, 0);
-        // foreach (var hit in colliders){
-        //  if(hit.gameObject.GetComponent<LevelGenerator>)
-        // }
+        foreach (var hit in colliders)
+        {
+            if (hit.gameObject.GetComponent<PlatFormColtroller>() != null) return;
+        }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {

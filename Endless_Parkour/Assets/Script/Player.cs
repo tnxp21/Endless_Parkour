@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     [SerializeField] float checkDistanceToGround = 1.5f;
     [SerializeField] float checkDistanceToCeiling = 1.5f;
     public LayerMask groundMask;
-    bool runBegin = false;
+    [HideInInspector] public bool runBegin = false;
     bool isOnGround = false;
     bool ceilingDetected = false;
     bool wallDetected = false;
@@ -241,10 +241,10 @@ public class Player : MonoBehaviour
     #region Inputs
     void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            runBegin = true;
-        }
+        // if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        // {
+        //     runBegin = true;
+        // }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             JumpingButton();

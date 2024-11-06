@@ -397,6 +397,7 @@
 "Assets/Script/PlatFormColtroller.cs"
 "Assets/Script/Player.cs"
 "Assets/Script/Trap.cs"
+"Assets/Script/UI_Manage.cs"
 -langversion:9.0
 /deterministic
 /optimize+

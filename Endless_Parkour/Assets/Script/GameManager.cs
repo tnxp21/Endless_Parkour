@@ -8,8 +8,12 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Color platformHeaderColor;
     public int coins;
-    void Awake(){
-        instance=this;
+
+    public Player player;
+    void Awake()
+    {
+        instance = this;
     }
-    public void RestartLevel()=>SceneManager.LoadScene(0);
+    public void RestartLevel() => SceneManager.LoadScene(0);
+    public void RunBegin() => player.runBegin = true;
 }

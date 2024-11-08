@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sr;
     bool isDead;
+    [HideInInspector] public bool extraLife;
 
 
     [Header("Speed info")]
@@ -83,13 +84,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!runBegin) return;
         CheckCollision();
         AnimatorController();
         Timing();
-        if (Input.GetKeyDown(KeyCode.O) && !isDead) Die();
-        if (isDead) return;
+        extraLifeInfo();
 
-        if (Input.GetKeyDown(KeyCode.K)) KnockBack();
+        if (isDead) return;
         if (isKnocked) return;
 
         GetInput();
@@ -100,6 +101,10 @@ public class Player : MonoBehaviour
         //Debug.Log(ledgeDetected);
     }
 
+    void extraLifeInfo()
+    {
+        extraLife = runSpeed >= maxSpeed;
+    }
 
     private void Timing()
     {
@@ -108,7 +113,7 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (runSpeed >= maxSpeed)
+        if (extraLife)
         {
             KnockBack();
         }
@@ -122,7 +127,8 @@ public class Player : MonoBehaviour
         anim.SetBool("isDead", true);
     }
 
-    IEnumerator EndOfDeathAnim() {
+    IEnumerator EndOfDeathAnim()
+    {
         yield return new WaitForSeconds(1);
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(1);
@@ -226,11 +232,7 @@ public class Player : MonoBehaviour
 
     private void MovementSetup()
     {
-        if (wallDetected)
-        {
-            SpeedReset();
-            return;
-        }
+        if (wallDetected) return;
         if (isSliding)
 
             rb.velocity = new Vector2(slideSpeed, rb.velocity.y);
@@ -241,6 +243,7 @@ public class Player : MonoBehaviour
     #region Inputs
     void GetInput()
     {
+
         // if (Input.GetKeyDown(KeyCode.KeypadEnter))
         // {
         //     runBegin = true;

@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
 
     IEnumerator EndOfDeathAnim()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.4f);
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(1);
         GameManager.instance.RestartLevel();

@@ -266,6 +266,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5342926927398387610}
     m_Modifications:
+    - target: {fileID: 1037880052386902971, guid: 5a115169873dd3a4d88a421e91c2d23b, type: 3}
+      propertyPath: chanceToSpawn
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1296287816708441283, guid: 5a115169873dd3a4d88a421e91c2d23b, type: 3}
       propertyPath: m_SortingLayer
       value: 2

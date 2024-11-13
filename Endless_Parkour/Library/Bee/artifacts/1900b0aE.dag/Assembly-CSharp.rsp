@@ -397,6 +397,7 @@
 "Assets/Script/PlatFormColtroller.cs"
 "Assets/Script/Player.cs"
 "Assets/Script/Trap.cs"
+"Assets/Script/UI/UI_EndGame.cs"
 "Assets/Script/UI/UI_Ingame.cs"
 "Assets/Script/UI/UI_Main.cs"
 "Assets/Script/UI/UI_Manage.cs"

@@ -132,7 +132,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(.4f);
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(1);
-        GameManager.instance.RestartLevel();
+        GameManager.instance.GameEnded();
     }
 
     IEnumerator Invincibility()

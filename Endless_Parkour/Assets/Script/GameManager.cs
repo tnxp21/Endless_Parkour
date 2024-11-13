@@ -7,21 +7,24 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Color platformHeaderColor;
-    public Color playerColor = Color.white;
+
+    public UI_Manage uiManage;
+
 
     [Header("Score info")]
-    public int coins;
+    public int coins = 0;
     public int coinsTotal;
-    public float distance;
+    public float distance = 0f;
     public int score = 0;
     public int highScore = 0;
 
     public Player player;
 
-    SpriteRenderer sr;
+    public SpriteRenderer sr;
 
     void Awake()
     {
+        Time.timeScale = 1;
         instance = this;
         sr = player.GetComponent<SpriteRenderer>();
         LoadInfo();
@@ -33,31 +36,41 @@ public class GameManager : MonoBehaviour
     }
 
     #region Player Data
-    public void SaveColor(Color color)
+    public void SaveColor(Color color, string colorType)
     {
         int r = Mathf.RoundToInt(color.r * 255);  // Ép thành số nguyên 0-255
         int g = Mathf.RoundToInt(color.g * 255);
         int b = Mathf.RoundToInt(color.b * 255);
         int colorValue = (r << 16) | (g << 8) | b;
-        PlayerPrefs.SetInt("CharacterColor", colorValue);
+        PlayerPrefs.SetInt(colorType, colorValue);
+        PlayerPrefs.Save();
     }
 
     // Hàm tải dữ liệu
     public void LoadColor()
     {
-        if (PlayerPrefs.HasKey("CharacterColor"))
+        sr.color = Color.white; // Giá trị mặc định nếu chưa có dữ liệu
+        platformHeaderColor = Color.yellow;
+        if (PlayerPrefs.HasKey("PlayerColor"))
         {
-            int colorValue = PlayerPrefs.GetInt("CharacterColor");
+            int colorValue = PlayerPrefs.GetInt("PlayerColor");
 
             int r = (colorValue >> 16) & 0xFF;
             int g = (colorValue >> 8) & 0xFF;
             int b = colorValue & 0xFF;
 
             sr.color = new Color(r / 255f, g / 255f, b / 255f); // Chuyển đổi thành giá trị từ 0 đến 1
-            return;
         }
+        if (PlayerPrefs.HasKey("PlatformColor"))
+        {
+            int colorValue = PlayerPrefs.GetInt("PlatformColor");
 
-        sr.color = Color.white; // Giá trị mặc định nếu chưa có dữ liệu
+            int r = (colorValue >> 16) & 0xFF;
+            int g = (colorValue >> 8) & 0xFF;
+            int b = colorValue & 0xFF;
+
+            platformHeaderColor = new Color(r / 255f, g / 255f, b / 255f); // Chuyển đổi thành giá trị từ 0 đến 1
+        }
     }
 
 
@@ -89,11 +102,6 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    public void RestartLevel()
-    {
-        SceneManager.LoadScene(0);
-        SaveInfo();
-    }
     public void RunBegin() => player.runBegin = true;
 
     void LoadInfo()
@@ -107,7 +115,17 @@ public class GameManager : MonoBehaviour
     {
         SaveCoins();
         SaveScore();
-        SaveColor(sr.color);
         PlayerPrefs.Save();
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void GameEnded()
+    {
+        SaveInfo();
+        uiManage.OpenEndGameMenu();
     }
 }

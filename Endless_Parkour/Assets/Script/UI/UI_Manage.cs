@@ -7,9 +7,15 @@ public class UI_Manage : MonoBehaviour
 {
     bool pauseGame = false;
     [SerializeField] GameObject mainMenuUI;
-    void Start()
+    [SerializeField] GameObject inGameMenuUI;
+    [SerializeField] GameObject endGameMenuUI;
+
+    void Awake()
     {
         SwitchMenuTo(mainMenuUI);
+    }
+    void Start()
+    {
         Time.timeScale = 1;
     }
     // Start is called before the first frame update
@@ -22,7 +28,12 @@ public class UI_Manage : MonoBehaviour
 
         uiMenu.SetActive(true);
     }
-    public void StartGameButton() => GameManager.instance.RunBegin();
+    public void StartGameButton()
+    {
+        SwitchMenuTo(inGameMenuUI);
+        GameManager.instance.RunBegin();
+    }
+
     public void Pause_PlayGameButton()
     {
         Time.timeScale = pauseGame ? 1 : 0;
@@ -31,5 +42,10 @@ public class UI_Manage : MonoBehaviour
     public void RestartButton()
     {
         GameManager.instance.RestartLevel();
+    }
+
+    public void OpenEndGameMenu()
+    {
+        SwitchMenuTo(endGameMenuUI);
     }
 }

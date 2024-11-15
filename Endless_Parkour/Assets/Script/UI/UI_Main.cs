@@ -8,7 +8,7 @@ public class UI_Main : MonoBehaviour
     [SerializeField] TextMeshProUGUI lastScoreText;
     [SerializeField] TextMeshProUGUI highScoreText;
     [SerializeField] TextMeshProUGUI coinCollectedText;
-    // Start is called before the first frame update
+
     void Start()
     {
         LoadInfo();

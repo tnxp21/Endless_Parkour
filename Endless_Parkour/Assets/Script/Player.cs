@@ -120,18 +120,24 @@ public class Player : MonoBehaviour
         else if (canBeKnock) Die();
     }
 
+    public void SetIsDead(bool dead) => isDead = dead;
+    public bool GetIsDead() => isDead;
+
     private void Die()
     {
         isDead = true;
         rb.velocity = knockBackDir;
         anim.SetBool("isDead", true);
+        Time.timeScale = 0.3f;
+        AudioManager.instance.PlaySFX(4);
+        AudioManager.instance.StopAllBGM();
     }
 
     IEnumerator EndOfDeathAnim()
     {
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.25f);
         rb.velocity = Vector2.zero;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.3f);
         GameManager.instance.GameEnded();
     }
 
@@ -251,6 +257,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             JumpingButton();
+            AudioManager.instance.PlaySFX(UnityEngine.Random.Range(1,2));
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
             SlidingButton();

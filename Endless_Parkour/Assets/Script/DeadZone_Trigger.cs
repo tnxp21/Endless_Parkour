@@ -17,9 +17,18 @@ public class DeadZone_Trigger : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Player>()!=null)
+        if (collision.GetComponent<Player>()!=null && !GameManager.instance.player.GetIsDead())
         {
-            GameManager.instance.GameEnded();       
+            AudioManager.instance.PlaySFX(4);
+            GameManager.instance.player.SetIsDead(true);
+            AudioManager.instance.StopAllBGM();
+            StartCoroutine("delayUIAfterDead");
         }
+    }
+
+    IEnumerator delayUIAfterDead() {
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(1.2f);
+        GameManager.instance.GameEnded();
     }
 }

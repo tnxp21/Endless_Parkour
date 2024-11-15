@@ -10,6 +10,9 @@ public class UI_Manage : MonoBehaviour
     [SerializeField] GameObject inGameMenuUI;
     [SerializeField] GameObject endGameMenuUI;
 
+    [Header("Volume slider")]
+    [SerializeField] UI_AudioMixerSlider[] slider;
+
     void Awake()
     {
         SwitchMenuTo(mainMenuUI);
@@ -17,6 +20,8 @@ public class UI_Manage : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1;
+        foreach (var item in slider) item.SetupSlider();
+
     }
     // Start is called before the first frame update
     public void SwitchMenuTo(GameObject uiMenu)

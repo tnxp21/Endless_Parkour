@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class UI_Ingame : MonoBehaviour
 
     [SerializeField] Image heartEmpty;
     [SerializeField] Image heartFull;
+    [SerializeField] Image SlideCooldown;
 
     float distance;
     float coins;
@@ -34,5 +36,9 @@ public class UI_Ingame : MonoBehaviour
             coinsText.text = coins.ToString();
         heartEmpty.enabled = !player.extraLife;
         heartFull.enabled = player.extraLife;
+    }
+    private void FixedUpdate()
+    {
+        SlideCooldown.color = new Color(1,1,1,1-GameManager.instance.player.GetSlideTimeCounterPercent());
     }
 }

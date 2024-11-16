@@ -17,6 +17,7 @@ public class UI_AudioMixerSlider : MonoBehaviour
         slider.onValueChanged.AddListener(SliderValue);
         slider.minValue = 0.001f;
         slider.value = PlayerPrefs.GetFloat(audioParameter, slider.value);
+
     }
 
     void OnDisable()

@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -18,6 +17,7 @@ public class Player : MonoBehaviour
 
     [Header("Speed info")]
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float speedToSurvive = 16f;
     [SerializeField] private float speedMultiplier;
     float defaultSpeed;
     [Space]
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
 
     [Header("Slide info")]
     [SerializeField] float slideSpeed;
-    [SerializeField] float slideTime;
+    [SerializeField] float slideTime = 2.0f;
     [SerializeField] float slideCoolDownTime = 0.0f;
     float slideTimeCounter = 0.0f;
     bool isSliding;
@@ -98,18 +98,20 @@ public class Player : MonoBehaviour
         CheckForSlidingCancel();
         CheckForLedgeToClimb();
         SpeedController();
-        //Debug.Log(ledgeDetected);
     }
 
     void extraLifeInfo()
     {
-        extraLife = runSpeed >= maxSpeed;
+        extraLife = runSpeed >= speedToSurvive;
     }
 
     private void Timing()
     {
-        slideTimeCounter -= Time.deltaTime;
+        if (slideTimeCounter>0) slideTimeCounter -= Time.deltaTime;
+        else slideTimeCounter = 0.0f;
     }
+
+    public float GetSlideTimeCounterPercent() => isSliding ? 1 : Mathf.Round(slideTimeCounter / slideCoolDownTime * 100f) * 0.01f;
 
     public void Damage()
     {
@@ -190,19 +192,20 @@ public class Player : MonoBehaviour
 
     private void SpeedController()
     {
-        if (runSpeed == maxSpeed) return;
         if (transform.position.x > speedMilestone)
         {
             speedMilestone += milestoneIncreaser;
-            runSpeed *= speedMultiplier;
             milestoneIncreaser *= speedMultiplier;
+            if (runSpeed == maxSpeed) return;
+            runSpeed *= speedMultiplier;
             runSpeed = runSpeed > maxSpeed ? maxSpeed : runSpeed;
         }
     }
     #endregion
+
     void CheckForSlidingCancel()
     {
-        if (slideTimeCounter < 0 && isSliding && !ceilingDetected)
+        if (slideTimeCounter <= 0 && isSliding && !ceilingDetected)
         {
             slideTimeCounter = slideCoolDownTime;
             isSliding = false;
@@ -223,14 +226,6 @@ public class Player : MonoBehaviour
         }
         if (canClimb)
             transform.position = climbBeginPosition;
-    }
-
-    void LedgeClimbOver()
-    {
-        canClimb = false;
-        rb.gravityScale = 5;
-        transform.position = climbOverPosition;
-        Invoke("AllowLedgeGrab", .5f);
     }
 
     void AllowLedgeGrab() => canGrabLedge = true;
@@ -257,14 +252,13 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             JumpingButton();
-            AudioManager.instance.PlaySFX(UnityEngine.Random.Range(1,2));
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
             SlidingButton();
     }
 
     //SlidingButton controller
-    private void SlidingButton()
+    public void SlidingButton()
     {
         if (rb.velocity.x != 0 && isOnGround && slideTimeCounter <= 0)
         {
@@ -274,10 +268,12 @@ public class Player : MonoBehaviour
     }
 
     //JumpingButtoning action controller
-    private void JumpingButton()
+    public void JumpingButton()
     {
 
         if (ceilingDetected) return;
+
+        RollAnimFinished();
 
         if (isOnGround)               //check to choose Jump force for player
         {
@@ -288,6 +284,8 @@ public class Player : MonoBehaviour
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce);
         }
+        else return;
+        AudioManager.instance.PlaySFX(UnityEngine.Random.Range(1, 2));
     }
     #endregion
 
@@ -309,6 +307,14 @@ public class Player : MonoBehaviour
     }
 
     void RollAnimFinished() => anim.SetBool("canRoll", false);
+    void LedgeClimbOver()
+    {
+        canClimb = false;
+        rb.gravityScale = 5;
+        transform.position = climbOverPosition;
+        Invoke("AllowLedgeGrab", .5f);
+    }
+
     #endregion
 
     void CheckCollision()

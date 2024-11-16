@@ -30,6 +30,12 @@ public class GameManager : MonoBehaviour
         LoadInfo();
     }
 
+    private void Start()
+    {
+        QualitySettings.vSyncCount = 0; 
+        Application.targetFrameRate = 120;
+    }
+
     void Update()
     {
         if (player.transform.position.x > distance) distance = player.transform.position.x;

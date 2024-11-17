@@ -19,12 +19,10 @@ public class UI_Manage : MonoBehaviour
     [SerializeField] Image soundOn;
     [SerializeField] Image soundOff;
 
-    void Awake()
-    {
-        SwitchMenuTo(mainMenuUI);
-    }
+ 
     void Start()
     {
+        SwitchMenuTo(mainMenuUI);
         Time.timeScale = 1;
         AudioListener.volume = !gameMute ? 1 : 0;
         foreach (var item in slider) item.SetupSlider();
@@ -38,7 +36,15 @@ public class UI_Manage : MonoBehaviour
         }
 
         uiMenu.SetActive(true);
+        AudioManager.instance.PlaySFX(3);
     }
+
+    public void SwitchSkyBox(int index)
+    {
+        AudioManager.instance.PlaySFX(3);
+        GameManager.instance.SetupSkyBox(index);
+    }
+
     public void StartGameButton()
     {
         SwitchMenuTo(inGameMenuUI);
@@ -52,6 +58,7 @@ public class UI_Manage : MonoBehaviour
     }
     public void RestartButton()
     {
+        AudioManager.instance.PlaySFX(3);
         GameManager.instance.RestartLevel();
     }
 

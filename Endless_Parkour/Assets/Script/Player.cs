@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     bool isDead;
     [HideInInspector] public bool extraLife;
 
+    [Header("VFX")]
+    [SerializeField] ParticleSystem dustVFX;
+    [SerializeField] ParticleSystem bloodSplashVFX;
 
     [Header("Speed info")]
     [SerializeField] private float maxSpeed;
@@ -30,6 +33,7 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 1.0f;
     [SerializeField] float jumpForce = 10.0f;
     [SerializeField] float doubleJumpForce = 8.0f;
+    bool canHardLand = false;
 
     [Header("Knock back info")]
     [SerializeField] Vector2 knockBackDir;
@@ -94,12 +98,26 @@ public class Player : MonoBehaviour
         if (isKnocked) return;
 
         GetInput();
+        LandInfo();
         if (runBegin) MovementSetup();
         CheckForSlidingCancel();
         CheckForLedgeToClimb();
         SpeedController();
     }
 
+    void LandInfo()
+    {
+        if (isDead) return;
+        if (rb.velocity.y < -5 && !isOnGround)
+        {
+            canHardLand = true; 
+        }
+        if (canHardLand && isOnGround)
+        {
+            dustVFX.Play();
+            canHardLand = false;
+        }
+    }
     void extraLifeInfo()
     {
         extraLife = runSpeed >= speedToSurvive;
@@ -127,9 +145,11 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        if (isDead) return;     // You cannot die twice right?? :>>
         isDead = true;
         rb.velocity = knockBackDir;
         anim.SetBool("isDead", true);
+        bloodSplashVFX.Play(); 
         Time.timeScale = 0.3f;
         AudioManager.instance.PlaySFX(4);
         AudioManager.instance.StopAllBGM();
@@ -235,7 +255,6 @@ public class Player : MonoBehaviour
     {
         if (wallDetected) return;
         if (isSliding)
-
             rb.velocity = new Vector2(slideSpeed, rb.velocity.y);
         else
             rb.velocity = new Vector2(runSpeed, rb.velocity.y);
@@ -264,6 +283,7 @@ public class Player : MonoBehaviour
         {
             isSliding = true;
             slideTimeCounter = slideTime;
+            dustVFX.Play();
         }
     }
 
@@ -285,6 +305,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce);
         }
         else return;
+        dustVFX.Play();
         AudioManager.instance.PlaySFX(UnityEngine.Random.Range(1, 2));
     }
     #endregion

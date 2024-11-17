@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [Header("Purchased color")]
+    [SerializeField] Material[] skyBoxMat;
+
+    [Header("Purchased color")]
     public Color platformHeaderColor;
 
     public UI_Manage uiManage;
@@ -27,6 +32,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         instance = this;
         sr = player.GetComponent<SpriteRenderer>();
+        SetupSkyBox(PlayerPrefs.GetInt("SkyBoxSetting", 0));
         LoadInfo();
     }
 
@@ -109,6 +115,15 @@ public class GameManager : MonoBehaviour
     #endregion
 
     public void RunBegin() => player.runBegin = true;
+
+    public void SetupSkyBox(int i)
+    {
+        if(i < skyBoxMat.Length)
+        RenderSettings.skybox = skyBoxMat[i];
+        else
+            RenderSettings.skybox = skyBoxMat[Random.Range(0, skyBoxMat.Length)];
+        PlayerPrefs.SetInt("SkyBoxSetting", i);
+    }
 
     void LoadInfo()
     {
